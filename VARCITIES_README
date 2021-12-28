@@ -1,0 +1,6 @@
+To run the example
+./service start
+node bin/iotagent-lora 
+./provition-DummySensor
+@ https://eu1.cloud.thethings.network/console/applications/test-varcities-chania/devices/eui-70b3d57ed004a537/messaging/uplink
+Send 03670110056700FF 
