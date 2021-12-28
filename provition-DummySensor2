@@ -1,0 +1,96 @@
+#!/bin/bash
+
+printf "⏳ Provisioning IoT devices "
+# #define the abilities and attributs of the sensors
+# curl -iL -X POST \
+#   'localhost:4041/iot/services' \
+#   -H 'Content-Type: application/json' \
+#   -H 'fiware-service: openiot' \
+#   -H 'fiware-servicepath: /' \
+#   -d '{
+#  "services": [
+#    {
+#      "apikey":      "'"${TemperatureSensor_API}"'",
+#      "cbroker":     "http://orion:1026",
+#      "entity_type": "TemperatureSensor",
+#      "resource":    "/iot/d",
+#      "protocol":    "PDI-IoTA-UltraLight",
+#      "transport":   "HTTP",
+#      "timezone":    "Europe/Athens",
+#      "attributes": [
+#        { "object_id": "t", "name":"temperature", "type": "Integer",
+#          "metadata": {"unitCode": {"type": "Property","value": "CEL"}}
+#        }
+#       ],
+#       "static_attributes": [
+#         {"name": "description", "type":"Property", "value": "Temperature Sensor"},
+#         {"name": "category", "type":"Property", "value": ["sensor"]},
+#         {"name": "controlledProperty", "type": "Property", "value": "temperature"},
+#         {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+#       ]
+#    }
+#    ]
+#   }'
+
+#   curl -iX POST \
+#   'http://localhost:4061/iot/services' \
+#   -H 'Content-Type: application/json' \
+#   -H 'fiware-service: openiot' \
+#   -H 'fiware-servicepath: /' \
+#   -d '{
+#  "services": [
+#    {
+#      "apikey":      "",
+#      "cbroker":     "http://orion:1026",
+#      "entity_type": "LoraDevice",
+#      "resource":    "/iot/d"
+#    }
+#  ]
+# }'
+
+
+
+
+curl --location --request POST \
+localhost:4061/iot/devices \
+-H 'Content-Type: application/json' \
+-H 'Accept: application/json' \
+-H 'fiware-service: atosioe' \
+-H 'fiware-servicepath: /lorattn' \
+-d '{
+  "devices": [
+    {
+      "device_id": "eui-70b3d57ed004a537",
+      "entity_name": "urn:ngsi-ld:TemperatureSensor:temperaturesensor001",
+      "entity_type": "LoraDevice",
+      "timezone": "Europe/Athens",
+      "attributes": [
+        {
+          "object_id": "t1",
+          "name": "temperature_1",
+          "type": "Number"
+        },        
+        {
+          "object_id": "t2",
+          "name": "temperature_2",
+          "type": "Number"
+          }
+      ],
+      "internal_attributes": {
+        "lorawan": {
+          "application_server": {
+            "host": "eu1.cloud.thethings.network",
+            "username": "test-varcities-chania@ttn",
+            "password": "NNSXS.E2WXDA2DB5Y4UM4FWRZCE3SGPBE47OOMDIMSSPQ.LG4ZIWTJQ3ILMSIAF3VVUN33ECD6ICIX4XM5M343QOCVRMXPFTCQ",
+            "provider": "TTN"
+          },
+          "dev_eui": "70B3D57ED004A537",
+          "app_eui": "0000000000000000",
+          "application_id": "test-varcities-chania@ttn",
+          "application_key": "53D3327396C77A877D9EC92EEE4CD5EB",
+          "data_model": "cayennelpp"
+        }
+      }
+    }
+  ]
+}'

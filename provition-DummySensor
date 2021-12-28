@@ -1,0 +1,44 @@
+#!/bin/bash
+
+curl -iL -X POST \
+localhost:4061/iot/devices \
+-H 'Content-Type: application/json' \
+-H 'Accept: application/json' \
+-H 'fiware-service: openiot' \
+-H 'fiware-servicepath: /' \
+-d '{
+  "devices": [
+    {
+      "device_id": "lora_n_001",
+      "entity_name": "LORA-N-001",
+      "entity_type": "LoraDevice",
+      "timezone": "Europe/Athens",
+      "attributes": [
+        {
+          "object_id": "t1",
+          "name": "temperature_1",
+          "type": "Number"
+        },        {
+          "object_id": "t2",
+          "name": "temperature_2",
+          "type": "Number"
+          },
+      ],
+      "internal_attributes": {
+        "lorawan": {
+          "application_server": {
+            "host": "eu1.cloud.thethings.network",
+            "username": "test-varcities-chania@ttn",
+            "password": "NNSXS.E2WXDA2DB5Y4UM4FWRZCE3SGPBE47OOMDIMSSPQ.LG4ZIWTJQ3ILMSIAF3VVUN33ECD6ICIX4XM5M343QOCVRMXPFTCQ",
+            "provider": "TTS-V3"
+          },
+          "dev_eui": "70B3D57ED004A537",
+          "app_eui": "0000000000000000",
+          "application_id": "test-varcities-chania",
+          "application_key": "53D3327396C77A877D9EC92EEE4CD5EB",
+          "data_model": "cayennelpp"
+        }
+      }
+    }
+  ]
+}'
