@@ -95,7 +95,7 @@ config.iota = {
 		 * Host where MongoDB is located. If the MongoDB used is a replicaSet, this property will contain a
 		 * comma-separated list of the instance names or IPs.
 		 */
-		host: 'mongodb',
+		host: 'mongo-db',
 
 		/**
 		 * Port where MongoDB is listening. In the case of a replicaSet, all the instances are supposed to be listening
