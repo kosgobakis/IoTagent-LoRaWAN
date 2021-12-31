@@ -35,16 +35,25 @@ services:
       test: curl --fail -s http://orion:${ORION_PORT}/version || exit 1
       interval: 5s
 
-  # iotagent-lora:
-  #   depends_on:
-  #     - orion
-  #   entrypoint: bin/iotagent-lora docker/config-docker.js
-  #   hostname: iotagent-lora
-  #   image: ioeari/iotagent-lora
-  #   ports:
-  #     - "4061:4061"
-  #   stdin_open: true
-  #   tty: true
+  iotagent-lora:
+    depends_on:
+      - orion
+    entrypoint: bin/iotagent-lora docker/config-docker.js
+    hostname: iotagent-lora
+    image: iot-agent-ld
+    ports:
+      - "4061:4061"
+    # environment:
+    #   - "IOTA_CB_HOST=orion"
+    #   - "IOTA_CB_PORT=1026"
+    #   - "IOTA_NORTH_PORT=4041"
+    #   - "IOTA_REGISTRY_TYPE=mongodb"
+    #   - "IOTA_MONGO_HOST=mongo-db"
+    #   - "IOTA_MONGO_PORT=27017"
+    #   - "IOTA_MONGO_DB=iotagent-lorawan"
+    #   - "IOTA_PROVIDER_URL=http://iot-agent:4041"
+    stdin_open: true
+    tty: true
 
   # Databases
   mongo-db:
