@@ -83,7 +83,7 @@ config.iota = {
 	 *             from the 'mongoDb' configuration property.
 	 */
 	deviceRegistry: {
-		type: 'mongodb'
+		type: 'memory'
 	},
 
 	/**
