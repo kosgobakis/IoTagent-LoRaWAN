@@ -17,12 +17,12 @@
 # License along with iotagent-lora. If not, see http://www.gnu.org/licenses/.
 #
 
-ARG NODE_VERSION=8.16.1-slim
+ARG NODE_VERSION=12.22.6-bullseye-slim
 FROM node:${NODE_VERSION}
-ARG GITHUB_ACCOUNT=Atos-Research-and-Innovation
+ARG GITHUB_ACCOUNT=kosgobakis
 ARG GITHUB_REPOSITORY=IoTagent-LoRaWAN
 ARG DOWNLOAD=latest
-ARG SOURCE_BRANCH=master
+ARG SOURCE_BRANCH=main
 
 # Copying Build time arguments to environment variables so they are persisted at run time and can be 
 # inspected within a running container.
@@ -32,7 +32,6 @@ ENV GITHUB_ACCOUNT=${GITHUB_ACCOUNT}
 ENV GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
 ENV DOWNLOAD=${DOWNLOAD}
 
-MAINTAINER FIWARE IoTAgent Team. Atos Spain S.A
 
 # IMPORTANT: For production environments use Docker Secrets to protect values of the sensitive ENV 
 # variables defined below, by adding _FILE to the name of the relevant variable.
@@ -70,7 +69,7 @@ RUN if [ "${DOWNLOAD}" = "latest" ] ; \
 	RELEASE_CONCAT=$(echo "${RELEASE}" | tr / -); \
 	# Ensure that unzip is installed, and download the sources
 	apt-get update && \
-	apt-get install -y  --no-install-recommends unzip && \
+	apt-get install -y  --no-install-recommends unzip wget && \
 	wget --no-check-certificate -O source.zip https://github.com/"${GITHUB_ACCOUNT}"/"${GITHUB_REPOSITORY}"/archive/"${RELEASE}".zip && \
 	unzip source.zip && \
 	rm source.zip && \
@@ -85,7 +84,7 @@ WORKDIR /opt/iotagent-lora
 RUN \
 	# Ensure that Git is installed prior to running npm install
 	apt-get update && \
-	apt-get install -y git  && \
+	apt-get install -y git wget  && \
 	npm install pm2@3.2.2 -g && \
 	echo "INFO: npm install --production..." && \
 	npm install --production && \
