@@ -1,10 +1,9 @@
-version: '2'
+version: "2"
 
 volumes:
-  mongo_data:
+  ? mongo_data
 
 services:
-
   mongodb:
     expose:
       - "27017"
@@ -16,11 +15,11 @@ services:
       - mongo_data:/data/db
 
   orion:
-    command:  -dbhost mongodb -port 1026 -logLevel DEBUG
+    command: -dbhost mongodb -port 1026 -logLevel DEBUG
     depends_on:
       - mongodb
     expose:
-        - "1026"
+      - "1026"
     hostname: orion
     image: fiware/orion:latest
     ports:
@@ -36,6 +35,6 @@ services:
     hostname: iotagent-lora
     image: ioeari/iotagent-lora
     ports:
-      - "4061:4061"
+      - "4041:4041"
     stdin_open: true
     tty: true

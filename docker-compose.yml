@@ -42,7 +42,7 @@ services:
     hostname: iotagent-lora
     image: iot-agent-ld
     ports:
-      - "4061:4061"
+      - "4041:4041"
     # environment:
     #   - "IOTA_CB_HOST=orion"
     #   - "IOTA_CB_PORT=1026"

@@ -63,7 +63,7 @@ config.iota = {
 		/**
 		 * Port where the IoT Agent will be listening for requests.
 		 */
-		port: 4061
+		port: 4041
 	},
 
 	/**
@@ -226,7 +226,7 @@ config.iota = {
 	 * URL Where the IOTA Will listen for incoming updateContext and queryContext requests (for commands and passive
 	 * attributes). This URL will be sent in the Context Registration requests.
 	 */
-	providerUrl: 'http://localhost:4061',
+	providerUrl: 'http://localhost:4041',
 
 	/**
 	 * Default maximum expire date for device registrations.

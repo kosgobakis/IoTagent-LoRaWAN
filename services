@@ -24,16 +24,18 @@ if (( $# < 1 )); then	echo "Illegal number of parameters"
 fi
 
 stoppingContainers () {
-	CONTAINERS=$(docker ps -aq)
-	if [[ -n $CONTAINERS ]]; then 
-		echo "Stopping containers"
-		docker rm -f $CONTAINERS
-	fi
-	VOLUMES=$(docker volume ls -qf dangling=true) 
-	if [[ -n $VOLUMES ]]; then 
-		echo "Removing old volumes"
-		docker volume rm $VOLUMES
-	fi
+	# CONTAINERS=$(docker ps -aq)
+	# if [[ -n $CONTAINERS ]]; then 
+	# 	echo "Stopping containers"
+	# 	docker rm -f $CONTAINERS
+	# fi
+	# VOLUMES=$(docker volume ls -qf dangling=true) 
+	# if [[ -n $VOLUMES ]]; then 
+	# 	echo "Removing old volumes"
+	# 	docker volume rm $VOLUMES
+	# fi
+	echo "Stopping containers"
+	docker-compose --log-level ERROR -f docker-compose.yml -p fiware down -v --remove-orphans
 }
 
 addDatabaseIndex () {
