@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+export $(cat .env | grep "#" -v)
 
 printf "⏳ Provisioning IoT devices "
  
@@ -6,8 +8,8 @@ curl -iL -X POST \
 localhost:4041/iot/devices \
 -H 'Content-Type: application/json' \
 -H 'Accept: application/json' \
--H 'fiware-service: atosioe' \
--H 'fiware-servicepath: /lorattn' \
+-H 'fiware-service: openiot' \
+-H 'fiware-servicepath: /' \
 -d '{
   "devices": [
     {
@@ -18,14 +20,14 @@ localhost:4041/iot/devices \
       "attributes": [
         {
           "object_id": "temperature_3",
-          "name": "temperature_3",
-          "type": "Number",
+          "name": "temperatureCh3",
+          "type": "Float",
           "metadata": {"unitCode": {"type": "Property","value": "CEL"}}
         },        
         {
           "object_id": "temperature_5",
-          "name": "temperature_5",
-          "type": "Number",
+          "name": "temperatureCh5",
+          "type": "Float",
           "metadata": {"unitCode": {"type": "Property","value": "CEL"}}
           }
       ],
@@ -48,6 +50,22 @@ localhost:4041/iot/devices \
     }
   ] 
 }'
+      #   "static_attributes": [
+      #     {"name": "refParcel", "type": "Relationship","value": "urn:ngsi-ld:AgriParcel:001"}
+      #  ],
+printf "Get device details from IoT Agent "
+curl -X GET \
+'http://localhost:4041/iot/devices/eui-70b3d57ed004a537' \
+-H 'fiware-service: openiot' \
+-H 'fiware-servicepath: /' |jq .
+
+printf "Get device details from Orion-LD "
+curl -X GET 'http://localhost:'"${ORION_LD_PORT}"'/ngsi-ld/v1/entities/?type=LoraDevice' \
+-H 'fiware-service: openiot' \
+-H 'fiware-servicepath: /' \
+-H 'Link: <http://context/ngsi-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Accept: application/json' |jq .
+
 
 # Message recieved from IoT Agent when Simulate uplink message "03670110056700FF" from eui-70b3d57ed004a537
 # @ https://eu1.cloud.thethings.network/console/applications/test-varcities-chania/devices/eui-70b3d57ed004a537/messaging/uplink

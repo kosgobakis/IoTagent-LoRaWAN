@@ -53,8 +53,7 @@ config.iota = {
 		 */
 		ngsiVersion: 'ld',
 
-		jsonLdContext:
-			'https://raw.githubusercontent.com/FIWARE/tutorials.Time-Series-Data/NGSI-LD/data-models/ngsi-context.jsonld'
+		jsonLdContext: 'http://context/ngsi-context.jsonld'
 	},
 
 	/**
