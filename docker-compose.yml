@@ -70,7 +70,7 @@ services:
       - orion
     entrypoint: bin/iotagent-lora docker/config-docker.js
     hostname: iotagent-lora
-    image: iot-agent-ld
+    image: iot-agent-lorawan-ld:latest
     ports:
       - "4041:4041"
     environment:

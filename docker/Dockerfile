@@ -92,7 +92,8 @@ RUN \
 	apt-get clean && \
 	apt-get remove -y git && \
 	apt-get -y autoremove  && \
-	chmod +x docker/entrypoint.sh
+	chmod +x docker/entrypoint.sh &&\
+	rm -rf data-models docker-compose.yml provition-DummySensor services VARCITIES_README getTemperature subscribeToQuantum
 
 USER node
 ENV NODE_ENV=production
