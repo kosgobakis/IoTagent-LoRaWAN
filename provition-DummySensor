@@ -63,10 +63,12 @@ printf "Get device details from Orion-LD "
 curl -X GET 'http://localhost:'"${ORION_LD_PORT}"'/ngsi-ld/v1/entities/?type=LoraDevice' \
 -H 'fiware-service: openiot' \
 -H 'fiware-servicepath: /' \
--H 'Link: <http://context/ngsi-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Link: <http://context/'"${JSONLD}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Accept: application/json' |jq .
 
-
+curl -G -X GET  'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:TemperatureSensor:temperaturesensor001' \
+-H 'fiware-service: openiot' -H 'Link: <http://context/ngsi-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Accept: application/ld+json' |jq 
 # Message recieved from IoT Agent when Simulate uplink message "03670110056700FF" from eui-70b3d57ed004a537
 # @ https://eu1.cloud.thethings.network/console/applications/test-varcities-chania/devices/eui-70b3d57ed004a537/messaging/uplink
 # time=2021-12-28T13:12:01.234Z | lvl=DEBUG | corr=n/a | trans=n/a | op=IoTAgentNGSI.Entities-v2 | msg=Using the following NGSI v2 request:

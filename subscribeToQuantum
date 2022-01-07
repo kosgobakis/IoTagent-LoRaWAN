@@ -13,7 +13,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
   "description": "Notify me of all changes",
   "type": "Subscription",
   "entities": [{"type": "LoraDevice"}],
-
+"watchedAttributes": ["temperatureCh3"],
   "notification": {
     "attributes": ["temperatureCh3"],
     "format": "normalized",
@@ -22,8 +22,13 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
       "accept": "application/json"
     }
   },
-   "@context": "http://context/ngsi-context.jsonld"
+   "@context": "http://context/'"${JSONLD}"'"
   }'
+
+  curl -X GET \
+  'http://localhost:'"${ORION_LD_PORT}"'/ngsi-ld/v1/subscriptions/' \
+  -H 'NGSILD-Tenant: openiot' |jq .
+  
   # "watchedAttributes": ["temperature3","temperature5"],
 # curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 # -H 'Content-Type: application/ld+json' \
@@ -108,10 +113,6 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 # //    "throttling": 10,
 # //    "@context": "http://192.168.10.5:3000/data-models/ngsi-context.jsonld"
 # // }'
-
-curl -X GET \
-  'http://localhost:'"${ORION_LD_PORT}"'/ngsi-ld/v1/subscriptions/' \
-  -H 'NGSILD-Tenant: openiot'|jq .
 
 
 # curl -X GET \

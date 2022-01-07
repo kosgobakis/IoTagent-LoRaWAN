@@ -1,0 +1,13 @@
+{
+    "@context": {
+        "type": "@type",
+        "id": "@id",
+        "ngsi-ld": "https://uri.etsi.org/ngsi-ld/",
+        "example": "https://example.com/",
+        
+        "LoraDevice": "example:LoraDevice",
+
+        "temperatureCh3": "https://example.com/ch3",
+        "temperatureCh5": "https://example.com/ch5"
+    }
+}
