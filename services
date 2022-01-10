@@ -95,7 +95,7 @@ case "${command}" in
 		echo ""
 		docker-compose up -d --remove-orphans
 		waitForMongo
-		#addDatabaseIndex
+		addDatabaseIndex
 		displayServices
 		;;
 	"stop")
