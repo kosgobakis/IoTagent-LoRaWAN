@@ -7,12 +7,15 @@ set -e
 export $(cat .env | grep "#" -v)
 
 
-
 curl -G -X GET 'http://localhost:'"${ORION_LD_PORT}"'/ngsi-ld/v1/entities/urn:ngsi-ld:TemperatureSensor:temperaturesensor001' \
     -H 'fiware-service: openiot' \
-    -H 'fiware-servicepath: /' | jq .
+    -H 'fiware-servicepath: /' 
 
 curl -G -X GET 'http://localhost:'"${ORION_LD_PORT}"'/ngsi-ld/v1/entities/urn:ngsi-ld:TemperatureSensor:temperaturesensor001' \
     -H 'fiware-service: openiot' \
     -H 'fiware-servicepath: /' \
-    -H 'Link: <http://context/'"${JSONLD}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' | jq .
+    -H 'Link: <http://context/'"${JSONLD}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' 
+
+  curl -X GET \
+  'http://localhost:'"${ORION_LD_PORT}"'/ngsi-ld/v1/subscriptions/' \
+  -H 'NGSILD-Tenant: openiot' 
