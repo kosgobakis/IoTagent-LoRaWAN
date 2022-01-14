@@ -8,6 +8,9 @@
         "LoraDevice": "example:LoraDevice",
 
         "temperatureCh3": "https://example.com/ch3",
-        "temperatureCh5": "https://example.com/ch5"
+        "temperatureCh5": "https://example.com/ch5",
+
+        "TemperatureSensor": "example:TemperatureSensor",
+        "temperature":"https://w3id.org/saref#temperature"
     }
 }

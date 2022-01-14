@@ -27,7 +27,7 @@ services:
     volumes:
       - data-models:/usr/local/apache2/htdocs/
     healthcheck:
-      test: (wget --server-response --spider --quiet  http://ld-context/ngsi-context.jsonld 2>&1 | awk 'NR==1{print $$2}'|  grep -q -e "200") || exit 1
+      test: (wget --server-response --spider --quiet  http://context/ngsi-context.jsonld 2>&1 | awk 'NR==1{print $$2}'|  grep -q -e "200") || exit 1
   # Orion is the context broker
   orion:
     image: fiware/orion-ld:${ORION_LD_VERSION}
@@ -36,11 +36,12 @@ services:
     container_name: fiware-orion
     depends_on:
       - mongo-db
+      - ld-context
     networks:
       - default
     ports:
       - "${ORION_PORT}:${ORION_PORT}" # localhost:1026
-    command: -dbhost mongo-db -logLevel DEBUG -noCache -logForHumans
+    command: -dbhost mongo-db -logLevel DEBUG -noCache -logForHumans -forwarding
     healthcheck:
       test: curl --fail -s http://orion:${ORION_PORT}/version || exit 1
       interval: 5s
