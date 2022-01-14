@@ -1,0 +1,132 @@
+#!/bin/bash
+set -e
+export $(cat .env | grep "#" -v)
+
+printf "⏳ Provisioning IoT devices "
+ 
+curl -iL -X POST \
+localhost:4041/iot/devices \
+-H 'Content-Type: application/json' \
+-H 'Accept: application/json' \
+-H 'fiware-service: openiot' \
+-H 'fiware-servicepath: /' \
+-d '{
+  "devices": [
+    {
+      "device_id": "eui-70b3d57ed004a537",
+      "entity_name": "urn:ngsi-ld:TemperatureSensor:temperaturesensor001",
+      "entity_type": "LoraDevice",
+      "timezone": "Europe/Athens",
+      "attributes": [
+        {
+          "object_id": "temperature_3",
+          "name": "temperatureCh3",
+          "type": "Float",
+          "metadata": {"unitCode": {"type": "Property","value": "CEL"}}
+        },        
+        {
+          "object_id": "temperature_5",
+          "name": "temperatureCh5",
+          "type": "Float",
+          "metadata": {"unitCode": {"type": "Property","value": "CEL"}}
+          }
+      ],
+      "internal_attributes": {
+        "lorawan": {
+          "application_server": {
+            "host": "eu1.cloud.thethings.network",
+            "username": "test-varcities-chania@ttn",
+            "password": "NNSXS.E2WXDA2DB5Y4UM4FWRZCE3SGPBE47OOMDIMSSPQ.LG4ZIWTJQ3ILMSIAF3VVUN33ECD6ICIX4XM5M343QOCVRMXPFTCQ",
+            "provider": "TTN"
+          },
+          "dev_eui": "70B3D57ED004A537",
+          "app_eui": "0000000000000000",
+          "application_id": "test-varcities-chania@ttn",
+          "application_key": "53D3327396C77A877D9EC92EEE4CD5EB",
+          "data_model": "application_server"
+        }
+      },
+      "protocol": "LORAJSON"
+    }
+  ] 
+}'
+      #   "static_attributes": [
+      #     {"name": "refParcel", "type": "Relationship","value": "urn:ngsi-ld:AgriParcel:001"}
+      #  ],
+printf "Get device details from IoT Agent "
+curl -X GET \
+'http://localhost:4041/iot/devices/eui-70b3d57ed004a537' \
+-H 'fiware-service: openiot' \
+-H 'fiware-servicepath: /' |jq .
+
+printf "Get device details from Orion-LD "
+curl -X GET 'http://localhost:'"${ORION_LD_PORT}"'/ngsi-ld/v1/entities/?type=LoraDevice' \
+-H 'fiware-service: openiot' \
+-H 'fiware-servicepath: /' \
+-H 'Link: <http://context/'"${JSONLD}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Accept: application/json' |jq .
+
+curl -G -X GET  'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:TemperatureSensor:temperaturesensor001' \
+-H 'fiware-service: openiot' -H 'Link: <http://context/ngsi-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Accept: application/ld+json' |jq 
+# Message recieved from IoT Agent when Simulate uplink message "03670110056700FF" from eui-70b3d57ed004a537
+# @ https://eu1.cloud.thethings.network/console/applications/test-varcities-chania/devices/eui-70b3d57ed004a537/messaging/uplink
+# time=2021-12-28T13:12:01.234Z | lvl=DEBUG | corr=n/a | trans=n/a | op=IoTAgentNGSI.Entities-v2 | msg=Using the following NGSI v2 request:
+
+# {
+#     "url": "http://localhost:1026/v2/entities/urn:ngsi-ld:TemperatureSensor:temperaturesensor001/attrs?type=LoraDevice",
+#     "method": "PATCH",
+#     "headers": {
+#         "fiware-service": "atosioe",
+#         "fiware-servicepath": "/lorattn"
+#     },
+#     "json": {
+#         "temperature_3": {
+#             "type": "Number",
+#             "value": 27.2,
+#             "metadata": {
+#                 "TimeInstant": {
+#                     "type": "DateTime",
+#                     "value": "2021-12-28T15:12:01.227+02:00"
+#                 }
+#             }
+#         },
+#         "temperature_5": {
+#             "type": "Number",
+#             "value": 25.5,
+#             "metadata": {
+#                 "TimeInstant": {
+#                     "type": "DateTime",
+#                     "value": "2021-12-28T15:12:01.227+02:00"
+#                 }
+#             }
+#         },
+#         "TimeInstant": {
+#             "type": "DateTime",
+#             "value": "2021-12-28T15:12:01.227+02:00"
+#         }
+#     }
+# }
+
+
+# time=2021-12-28T13:12:01.247Z | lvl=INFO | corr=n/a | trans=n/a | op=IoTAgentNGSI.Entities-v2 | msg=Received the following response from the CB: Value updated successfully
+
+# {"timestamp":"2021-12-28T13:12:01.247Z","level":"info","message":"Observations sent to CB successfully for device "}
+
+
+# curl -iX POST \
+# 'http://localhost:4061/iot/services' \
+# -H 'Content-Type: application/json' \
+# -H 'fiware-service: openiot' \
+# -H 'fiware-servicepath: /' \
+# -d '{
+# "services": [
+#   {
+#     "apikey":      "",
+#     "cbroker":     "http://orion:1026",
+#     "entity_type": "LoraDevice",
+#     "resource":    "/iot/d"
+#   }
+# ]
+# }'
+
